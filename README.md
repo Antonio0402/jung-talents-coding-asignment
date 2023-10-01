@@ -25,7 +25,6 @@ Clone this repo and install all dependencies
 git clone https://github.com/Antonio0402/jung-talents-coding-asignment.git
 
 cd jung-talents-coding-asignment
-
 ```
 
 Install the dependecies and start the local dev server of client site from dir `jung-talents-coding-asignment`
@@ -34,7 +33,6 @@ Install the dependecies and start the local dev server of client site from dir `
 cd client
 
 npm install
-
 ```
 
 Open new terminal and move to directory of `jung-talents-coding-asignment`
@@ -46,7 +44,6 @@ cd jung-talents-coding-asignment
 cd api
 
 npm install
-
 ```
 
 ## Commands
