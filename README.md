@@ -60,13 +60,23 @@ All commands are run from both client and server of the project, from a terminal
 
 ### Screenshot
 
-![Click on the product image to view product details while navigate to new page](./screenshots/1.webp)
-![Click the plus or minus icon to change the quantity of merchandise](./screenshots/2.webp)
-![When finished. Click "Add To Cart" button](./screenshots/3.webp)
-![Open the cart sidebar by clicking on the shopping bag icon.](./screenshots/4.webp)
-![Confirm the total price and quantity before going Checkout when clicking on "Purchase" button](./screenshots/5.webp)
-![Fill in all the required input of shipping and billing info](./screenshots/6.webp)
-![All information with a red asterisk label next-to must be not empty and essential for checkout process](./screenshots/7.webp)
-![When completely filling in. Click "Pay in 3 installment with ScalaPay" button to create an order with ScalaPay](./screenshots/8.webp)
-![User will be navigate to a payment portal of ScalaPay](./screenshots/9.webp)
-![Proceed as requested for checkout and click "Continue"](./screenshots/10.webp)
+- Click on the product image to view product details while navigate to new page
+  ![Step 1](./screenshots/1.webp)
+- Click the plus or minus icon to change the quantity of merchandise
+  ![Step 2](./screenshots/2.webp)
+- When finished. Click "Add To Cart" button
+  ![Step 3](./screenshots/3.webp)
+- Open the cart sidebar by clicking on the shopping bag icon
+  ![.](./screenshots/4.webp)
+- Confirm the total price and quantity before going Checkout when clicking on "Purchase" button
+  ![Step 4](./screenshots/5.webp)
+- Fill in all the required input of shipping and billing info
+  ![Step 5](./screenshots/6.webp)
+- All information with a red asterisk label next-to must be not empty and essential for checkout process
+  ![Step 6](./screenshots/7.webp)
+- When completely filling in. Click "Pay in 3 installment with ScalaPay" button to create an order with ScalaPay
+  ![Step 7](./screenshots/8.webp)
+- User will be navigate to a payment portal of ScalaPay
+  ![Step 8](./screenshots/9.webp)
+- Proceed as requested for checkout and click "Continue
+  !["](./screenshots/10.webp)
