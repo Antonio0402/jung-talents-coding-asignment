@@ -9,7 +9,7 @@ import { WEIGHTS } from "../constants";
 export type ActionState = { type: "inc" } | { type: "dec" };
 
 type Props = {
-  product: SHOE;
+  product: Product;
 };
 
 const AddToCart = ({ product }: Props) => {
@@ -29,18 +29,18 @@ const AddToCart = ({ product }: Props) => {
   );
 
   //Create Toast
-  // const notify = () => {
-  //   toast.success(`${product.title} added to your cart.`, {
-  //     duration: 1500,
-  //   });
-  // };
+  const notify = () => {
+    toast.success(`${product.title} added to your cart.`, {
+      duration: 1500,
+    });
+  };
   return (
     <>
       <Quantity quantity={quantity} setQuantity={setQuantity} spacing={0} />
       <BuyButton
         onClick={() => {
           addToCart(product, quantity);
-          // notify();
+          notify();
         }}
       >
         Add To Cart

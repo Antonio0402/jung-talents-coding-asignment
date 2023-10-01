@@ -1,26 +1,21 @@
-import { Link } from "react-router-dom";
 import styled from "styled-components/macro";
+import { Link } from "react-router-dom";
 import { WEIGHTS } from "../constants";
 import formatMoney from "../lib/formatMoney";
 
 type Props = {
-  shoe: SHOE;
+  shoe: Product;
 };
 
 const Product = ({ shoe }: Props) => {
   return (
-    <Link
-      to={`/product/${shoe.slug}`}
-      state={{
-        shoe: shoe,
-      }}
-    >
+    <Link to={`/product/${shoe.slug}`}>
       <Wrapper>
         <ImageWrapper>
-          <Image src={shoe.imageSrc} alt={shoe.name} />
+          <Image src={`/assets/${shoe.img}.webp`} alt={shoe.title} />
         </ImageWrapper>
-        <Title>{shoe.name}</Title>
-        <Price>{formatMoney(shoe.price)}</Price>
+        <Title>{shoe.title}</Title>
+        <Price>{formatMoney(Number(shoe.price.slice(1)))}</Price>
       </Wrapper>
     </Link>
   );

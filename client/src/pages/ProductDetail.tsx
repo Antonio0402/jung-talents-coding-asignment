@@ -1,42 +1,119 @@
-import { useLocation } from "react-router-dom";
 import styled from "styled-components/macro";
 import AddToCart from "../components/AddToCart";
+import ScalaPay from "../components/ScalaPay";
+import { Main } from "./Home";
+
+import { Suspense, useMemo } from "react";
+
 import { WEIGHTS } from "../constants";
 import { pluralize } from "../lib/pluralize";
 import formatMoney from "../lib/formatMoney";
-import { Main } from "./Home";
-import ScalaPay from "../components/ScalaPay";
 
-const ProductDetail = () => {
-  const location = useLocation();
-  const shoe = location.state?.shoe;
+import { QueryClient, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Params, useLoaderData, useParams } from "react-router-dom";
+import { ErrorBoundary, useErrorBoundary } from "react-error-boundary";
+import ErrorFallback from "../components/ErrorFallback";
 
-  const { imageSrc, name, numOfColors } = shoe;
+import { productQuery } from "../hooks/useProducts";
+
+export const loader =
+  (queryClient: QueryClient) =>
+  async ({ params }: { params: Params }) => {
+    const query = productQuery(params.productId || "");
+    return (
+      queryClient.getQueryData<Product>(query.queryKey) ??
+      (await queryClient.fetchQuery(query))
+    );
+  };
+
+const ProductDetail = ({
+  productId,
+  initialData,
+}: {
+  productId: string;
+  initialData?: Product;
+}) => {
+  const { showBoundary } = useErrorBoundary();
+  const queryClient = useQueryClient();
+
+  const query = useMemo(() => productQuery(productId), [productId]);
+
+  if (!initialData) {
+    initialData = queryClient.getQueryData(query.queryKey);
+    queryClient.setQueryDefaults(query.queryKey, {
+      staleTime: Infinity,
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+    });
+  }
+
+  const { data: product, error } = useQuery({
+    ...productQuery(productId || ""),
+    initialData,
+  });
+
+  if (error) {
+    showBoundary(error);
+  }
+
+  const shoe = product || initialData;
+
+  return (
+    <Wrapper>
+      <ImageWrapper>
+        <Image src={`/assets/${shoe?.img}.webp`} alt={shoe?.title} />
+      </ImageWrapper>
+      <ProductInfo>
+        <Title>{shoe?.title}</Title>
+        <Row>
+          <ColorInfo>{pluralize("Color", shoe?.numOfColors || 0)}</ColorInfo>
+          <NewFlag>Just-released</NewFlag>
+        </Row>
+        <Price id="price-container">
+          {formatMoney(Number(shoe?.price.slice(1)))}
+        </Price>
+        <ScalaWrapper>
+          <ScalaPay theme="primary" paylater />
+        </ScalaWrapper>
+        <AddToCart product={shoe!} />
+      </ProductInfo>
+    </Wrapper>
+  );
+};
+
+const ProductDetailPage = () => {
+  const { productId } = useParams();
+  const queryClient = useQueryClient();
+
+  const initialData = useLoaderData() as Awaited<
+    ReturnType<ReturnType<typeof loader>>
+  >;
 
   return (
     <Main>
-      <Wrapper>
-        <ImageWrapper>
-          <Image src={imageSrc} alt={name} />
-        </ImageWrapper>
-        <ProductInfo>
-          <Title>{name}</Title>
-          <Row>
-            <ColorInfo>{pluralize("Color", numOfColors)}</ColorInfo>
-            <NewFlag>Just-released</NewFlag>
-          </Row>
-          <Price id="price-container">{formatMoney(shoe.price)}</Price>
-          <ScalaWrapper>
-            <ScalaPay theme="primary" paylater />
-          </ScalaWrapper>
-          <AddToCart product={shoe} />
-        </ProductInfo>
-      </Wrapper>
+      <ErrorBoundary
+        FallbackComponent={ErrorFallback}
+        resetKeys={["product"]}
+        onError={() => {
+          const products = queryClient.getQueryData<SHOE[]>(["products"]);
+          if (productId) {
+            const product = products?.find((p) => p.slug === productId);
+            queryClient.setQueryData(["product", productId], product);
+          }
+        }}
+      >
+        <Suspense fallback={<p>Loading...</p>}>
+          <ProductDetail
+            productId={productId || ""}
+            initialData={initialData}
+          />
+        </Suspense>
+      </ErrorBoundary>
     </Main>
   );
 };
 
-export default ProductDetail;
+export default ProductDetailPage;
 
 const Wrapper = styled.div`
   display: flex;

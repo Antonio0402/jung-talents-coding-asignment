@@ -11,4 +11,4 @@ export type Product = {
   modified_at: string;
 }
 
-export type Category = 'shoes'
+export type Category = 'sport-shoes'

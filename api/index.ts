@@ -10,6 +10,7 @@ import corsOptions from "./config/corsOptions.js";
 import notFound from "./config/notFound.js";
 import errHandler from "./middlewares/errHandler.js";
 import checkOutRoute from "./routes/checkoutRoute.js";
+import productsRoute from "./routes/productsRoute.js";
 
 /**
  * -------------- GENERAL SETUP ----------------
@@ -59,6 +60,7 @@ app.use("/api/v1", apiRoute);
  */
 
 apiRoute.use("/checkout", checkOutRoute);
+apiRoute.use("/products", productsRoute)
 
 app.all('*', notFound);
 app.use(errHandler);

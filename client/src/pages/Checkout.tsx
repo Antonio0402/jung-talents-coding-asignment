@@ -46,7 +46,7 @@ const Checkout = () => {
       items: cartItems.map((item) => ({
         amount: item.product.price.toString(),
         quantity: item.quantity,
-        name: item.product.name,
+        name: item.product.title,
         category: item.product.category,
         sku: item.product.sku.toString(),
       })),

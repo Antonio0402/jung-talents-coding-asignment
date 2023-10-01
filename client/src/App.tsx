@@ -5,6 +5,15 @@ import Layout from "./components/Layout";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import Checkout from "./pages/Checkout";
+import { loader as productLoader } from "./pages/ProductDetail";
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 2 * 1000,
+    },
+  },
+});
 
 const router = createBrowserRouter([
   {
@@ -18,6 +27,7 @@ const router = createBrowserRouter([
       {
         path: "/product/:productId",
         element: <ProductDetail />,
+        loader: productLoader(queryClient),
       },
       {
         path: "checkout",
@@ -26,8 +36,6 @@ const router = createBrowserRouter([
     ],
   },
 ]);
-
-const queryClient = new QueryClient();
 
 function App() {
   return (

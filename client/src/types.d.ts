@@ -1,6 +1,7 @@
+
 type SHOE = {
   slug: string,
-  sku: number;
+  sku: string;
   name: string,
   category: string;
   imageSrc: string,
@@ -8,8 +9,23 @@ type SHOE = {
   numOfColors: number,
 }
 
+type Category = "sport-shoes"
+
+type Product = {
+  product_id: number;
+  sku: string;
+  title: string;
+  slug: string;
+  category: Category;
+  img: string;
+  numOfColors: number;
+  price: string;
+  created_at: string;
+  modified_at: string;
+}
+
 type Cart = {
-  product: SHOE;
+  product: Product;
   quantity: number;
 }
 

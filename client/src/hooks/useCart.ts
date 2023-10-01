@@ -5,15 +5,15 @@ const useCart = create<{
   totalQuantities: number,
   totalPrice: number,
   actions: {
-    setCartData: (product: SHOE, quantity: number) => void;
-    removeCartData: (product: Partial<SHOE>) => void;
+    setCartData: (product: Product, quantity: number) => void;
+    removeCartData: (product: Partial<Product>) => void;
   }
 }>((set, get) => ({
   cart: [],
   totalPrice: 0,
   totalQuantities: 0,
   actions: {
-    setCartData(product: SHOE, quantity: number) {
+    setCartData(product: Product, quantity: number) {
       const newCart = [...get().cart];
       const existCart = newCart.find(item => item.product.slug === product.slug);
       if (existCart) {
@@ -23,24 +23,24 @@ const useCart = create<{
             : item
           ),
           totalQuantities: get().totalQuantities + quantity,
-          totalPrice: get().totalPrice + (product.price ?? 0) * quantity,
+          totalPrice: get().totalPrice + (Number(product.price.slice(1)) ?? 0) * quantity,
         })
       } else {
         set({
           cart: [...newCart, { product, quantity }],
           totalQuantities: get().totalQuantities + quantity,
-          totalPrice: get().totalPrice + (product.price ?? 0) * quantity,
+          totalPrice: get().totalPrice + (Number(product.price.slice(1)) ?? 0) * quantity,
         })
       }
     },
-    removeCartData(product: Partial<SHOE>) {
+    removeCartData(product: Partial<Product>) {
       const newCart = [...get().cart];
       const existCart = newCart.find(item => item.product.slug === product.slug);
       if (existCart && existCart?.quantity === 1) {
         set({
           cart: newCart.filter(item => item.product.slug !== product.slug),
           totalQuantities: get().totalQuantities - 1,
-          totalPrice: get().totalPrice - (product.price ?? 0)
+          totalPrice: get().totalPrice - (Number(product.price?.slice(1)) ?? 0)
         })
       } else if (existCart) {
         set({
@@ -48,7 +48,7 @@ const useCart = create<{
             : item
           ),
           totalQuantities: get().totalQuantities - 1,
-          totalPrice: get().totalPrice - (product.price ?? 0)
+          totalPrice: get().totalPrice - (Number(product.price?.slice(1)) ?? 0)
         })
       }
     }

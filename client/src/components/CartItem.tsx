@@ -12,11 +12,14 @@ const CartItem = ({ children, item }: Props) => {
   return (
     <CartItemWrapper layout variants={CartItemVariants}>
       <ImageWrapper>
-        <Image src={item.product.imageSrc} alt={item.product.name} />
+        <Image
+          src={`/assets/${item.product.img}.webp`}
+          alt={item.product.title}
+        />
       </ImageWrapper>
       <CartInfo className="CartInfo">
-        <Title>{item.product.name}</Title>
-        <span>{formatMoney(item.product.price)}</span>
+        <Title>{item.product.title}</Title>
+        <span>{formatMoney(Number(item.product.price.slice(1)))}</span>
         {children}
       </CartInfo>
     </CartItemWrapper>
