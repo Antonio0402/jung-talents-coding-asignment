@@ -23,13 +23,13 @@ const useCart = create<{
             : item
           ),
           totalQuantities: get().totalQuantities + quantity,
-          totalPrice: get().totalPrice + (Number(product.price.slice(1)) ?? 0) * quantity,
+          totalPrice: get().totalPrice + (Number(product.price) ?? 0) * quantity,
         })
       } else {
         set({
           cart: [...newCart, { product, quantity }],
           totalQuantities: get().totalQuantities + quantity,
-          totalPrice: get().totalPrice + (Number(product.price.slice(1)) ?? 0) * quantity,
+          totalPrice: get().totalPrice + (Number(product.price) ?? 0) * quantity,
         })
       }
     },
@@ -40,7 +40,7 @@ const useCart = create<{
         set({
           cart: newCart.filter(item => item.product.slug !== product.slug),
           totalQuantities: get().totalQuantities - 1,
-          totalPrice: get().totalPrice - (Number(product.price?.slice(1)) ?? 0)
+          totalPrice: get().totalPrice - (Number(product.price) ?? 0)
         })
       } else if (existCart) {
         set({
@@ -48,7 +48,7 @@ const useCart = create<{
             : item
           ),
           totalQuantities: get().totalQuantities - 1,
-          totalPrice: get().totalPrice - (Number(product.price?.slice(1)) ?? 0)
+          totalPrice: get().totalPrice - (Number(product.price) ?? 0)
         })
       }
     }

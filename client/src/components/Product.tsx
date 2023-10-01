@@ -15,7 +15,7 @@ const Product = ({ shoe }: Props) => {
           <Image src={`/assets/${shoe.img}.webp`} alt={shoe.title} />
         </ImageWrapper>
         <Title>{shoe.title}</Title>
-        <Price>{formatMoney(Number(shoe.price.slice(1)))}</Price>
+        <Price>{formatMoney(Number(shoe.price))}</Price>
       </Wrapper>
     </Link>
   );

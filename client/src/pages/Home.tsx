@@ -1,10 +1,8 @@
 import styled from "styled-components/macro";
 import { QUERIES } from "../constants";
-import SHOES from "../data";
 import Product from "../components/Product";
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorFallback from "../components/ErrorFallback";
-import { useQueryClient } from "@tanstack/react-query";
 import { useProducts } from "../hooks/useProducts";
 import { Suspense } from "react";
 
@@ -19,16 +17,9 @@ const GalleryProducts = () => {
 };
 
 const Home = () => {
-  const queryClient = useQueryClient();
   return (
     <Main>
-      <ErrorBoundary
-        FallbackComponent={ErrorFallback}
-        onError={() => {
-          queryClient.setQueriesData(["products"], SHOES);
-        }}
-        resetKeys={["products"]}
-      >
+      <ErrorBoundary FallbackComponent={ErrorFallback} resetKeys={["products"]}>
         <Suspense fallback={<p>Loading...</p>}>
           <GalleryProducts />
         </Suspense>

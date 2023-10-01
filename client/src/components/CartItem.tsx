@@ -19,7 +19,7 @@ const CartItem = ({ children, item }: Props) => {
       </ImageWrapper>
       <CartInfo className="CartInfo">
         <Title>{item.product.title}</Title>
-        <span>{formatMoney(Number(item.product.price.slice(1)))}</span>
+        <span>{formatMoney(Number(item.product.price))}</span>
         {children}
       </CartInfo>
     </CartItemWrapper>

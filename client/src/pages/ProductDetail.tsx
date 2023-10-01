@@ -3,19 +3,20 @@ import AddToCart from "../components/AddToCart";
 import ScalaPay from "../components/ScalaPay";
 import { Main } from "./Home";
 
-import { Suspense, useMemo } from "react";
+import { Suspense } from "react";
 
 import { WEIGHTS } from "../constants";
 import { pluralize } from "../lib/pluralize";
 import formatMoney from "../lib/formatMoney";
 
-import { QueryClient, useQuery, useQueryClient } from "@tanstack/react-query";
+import { QueryClient, useQuery } from "@tanstack/react-query";
 import { Params, useLoaderData, useParams } from "react-router-dom";
 import { ErrorBoundary, useErrorBoundary } from "react-error-boundary";
 import ErrorFallback from "../components/ErrorFallback";
 
 import { productQuery } from "../hooks/useProducts";
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const loader =
   (queryClient: QueryClient) =>
   async ({ params }: { params: Params }) => {
@@ -26,26 +27,13 @@ export const loader =
     );
   };
 
-const ProductDetail = ({
-  productId,
-  initialData,
-}: {
-  productId: string;
-  initialData?: Product;
-}) => {
+const ProductDetail = () => {
+  const { productId } = useParams();
   const { showBoundary } = useErrorBoundary();
-  const queryClient = useQueryClient();
 
-  const query = useMemo(() => productQuery(productId), [productId]);
-
-  if (!initialData) {
-    initialData = queryClient.getQueryData(query.queryKey);
-    queryClient.setQueryDefaults(query.queryKey, {
-      staleTime: Infinity,
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
-    });
-  }
+  const initialData = useLoaderData() as Awaited<
+    ReturnType<ReturnType<typeof loader>>
+  >;
 
   const { data: product, error } = useQuery({
     ...productQuery(productId || ""),
@@ -59,54 +47,34 @@ const ProductDetail = ({
   const shoe = product || initialData;
 
   return (
-    <Wrapper>
-      <ImageWrapper>
-        <Image src={`/assets/${shoe?.img}.webp`} alt={shoe?.title} />
-      </ImageWrapper>
-      <ProductInfo>
-        <Title>{shoe?.title}</Title>
-        <Row>
-          <ColorInfo>{pluralize("Color", shoe?.numOfColors || 0)}</ColorInfo>
-          <NewFlag>Just-released</NewFlag>
-        </Row>
-        <Price id="price-container">
-          {formatMoney(Number(shoe?.price.slice(1)))}
-        </Price>
-        <ScalaWrapper>
-          <ScalaPay theme="primary" paylater />
-        </ScalaWrapper>
-        <AddToCart product={shoe!} />
-      </ProductInfo>
-    </Wrapper>
+    <Suspense fallback={<p>Loading...</p>}>
+      <Wrapper>
+        <ImageWrapper>
+          <Image src={`/assets/${shoe?.img}.webp`} alt={shoe?.title} />
+        </ImageWrapper>
+        <ProductInfo>
+          <Title>{shoe?.title}</Title>
+          <Row>
+            <ColorInfo>{pluralize("Color", shoe?.numofcolors || 0)}</ColorInfo>
+            <NewFlag>Just-released</NewFlag>
+          </Row>
+          <Price id="price-container">{formatMoney(Number(shoe?.price))}</Price>
+          <ScalaWrapper>
+            <ScalaPay theme="primary" paylater />
+          </ScalaWrapper>
+          <AddToCart product={shoe!} />
+        </ProductInfo>
+      </Wrapper>
+    </Suspense>
   );
 };
 
 const ProductDetailPage = () => {
-  const { productId } = useParams();
-  const queryClient = useQueryClient();
-
-  const initialData = useLoaderData() as Awaited<
-    ReturnType<ReturnType<typeof loader>>
-  >;
-
   return (
     <Main>
-      <ErrorBoundary
-        FallbackComponent={ErrorFallback}
-        resetKeys={["product"]}
-        onError={() => {
-          const products = queryClient.getQueryData<SHOE[]>(["products"]);
-          if (productId) {
-            const product = products?.find((p) => p.slug === productId);
-            queryClient.setQueryData(["product", productId], product);
-          }
-        }}
-      >
+      <ErrorBoundary FallbackComponent={ErrorFallback} resetKeys={["product"]}>
         <Suspense fallback={<p>Loading...</p>}>
-          <ProductDetail
-            productId={productId || ""}
-            initialData={initialData}
-          />
+          <ProductDetail />
         </Suspense>
       </ErrorBoundary>
     </Main>
