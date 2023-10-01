@@ -33,10 +33,11 @@ Install the dependecies and start the local dev server of client site from dir `
 cd client
 
 npm install
+
+npm run dev
 ```
 
-Open new terminal and move to directory of `jung-talents-coding-asignment`
-Install the dependecies and start the local dev server of server/api site
+Open new terminal and move to directory of `jung-talents-coding-asignment` then install the dependecies and start the local dev server of server/api site
 
 ```
 cd jung-talents-coding-asignment
@@ -44,6 +45,8 @@ cd jung-talents-coding-asignment
 cd api
 
 npm install
+
+npm run dev
 ```
 
 ## Commands
