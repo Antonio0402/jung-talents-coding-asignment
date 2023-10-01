@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import * as dotenv from "dotenv";
 dotenv.config();
-import { OrderObject } from "../../model/order.model.js";
+import { OrderObject } from "../../model/order/order.model.js";
 const SCALAPAY_SECRET_KEY = process.env.SCALAPAY_SECRET_KEY;
 
 if (!SCALAPAY_SECRET_KEY) {
